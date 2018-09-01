@@ -7,14 +7,15 @@
 	<link rel="stylesheet" type="text/css" href="css.css">
 </head>
 <body>
+
 	<div class="container">
 		
 		<ul class="nav nav-tabs nav-pills nav-fill" id="myTab" role="tablist">
 		 	<li class="nav-item">
-		    	<a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Filmes</a>
+		    	<a class="nav-link active" id="filmes-tab" data-toggle="tab" href="#filmes" role="tab" aria-controls="filmes" aria-selected="true">Filmes</a>
 		  	</li>
 		  	<li class="nav-item">
-		    	<a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Novelas</a>
+		    	<a class="nav-link" id="series-tab" data-toggle="tab" href="#series" role="tab" aria-controls="series" aria-selected="false">Novelas</a>
 		  	</li>
 		  	<li class="nav-item">
 		    	<a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Séries</a>
@@ -22,8 +23,8 @@
 		</ul>
 		
 		<div class="tab-content" id="myTabContent">
-		  	<div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-		  		<table class="table table-striped" id="tabela_principal">
+		  	<div class="tab-pane fade show active" id="filmes" role="tabpanel" aria-labelledby="filmes-tab">
+		  		<table class="table table-striped" id="tabela-filmes">
 		  		 	<thead>
 		  		    	<tr>
 		  		      		<th scope="col">Título Primário</th>
@@ -33,23 +34,26 @@
 		  		    	</tr>
 		  		  	</thead>
 		  		 	<tbody>
-		  		    	<tr>
-		  		      		<th scope="row">1</th>
-		  		      		<td>Mark</td>
-		  		      		<td><button type="button" class="btn btn-primary btn-modal" data-toggle="modal" data-target="#exampleModal" data-movie="1">Launch demo modal</button></td>
-		  		      		<td><button type="button" class="btn btn-danger">Danger</button></td>
-		  		      		<td><input type="hidden" name="id_movie" id="id_movie" value=""></td>
-		  		    	</tr>
 		  		  	</tbody>
 		  		</table>
-
-
 		  	</div>
-		  	
 
-
-		  	<div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">...</div>
 		  	
+		  	<div class="tab-pane fade" id="series" role="tabpanel" aria-labelledby="series-tab">
+		  		<table class="table table-striped" id="tabela-series">
+		  		 	<thead>
+		  		    	<tr>
+		  		      		<th scope="col">Título Primário</th>
+				  		    <th scope="col">Título Secundário</th>
+			  		 	    <th scope="col">Informações</th>
+				  		    <th scope="col">Remover</th>
+		  		    	</tr>
+		  		  	</thead>
+		  		 	<tbody>
+		  		  	</tbody>
+		  		</table>
+		  	</div>
+
 
 
 		  	<div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">...</div>

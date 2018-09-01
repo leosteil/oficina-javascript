@@ -1,14 +1,44 @@
-var movie = function(titPrimario, titSecundario, duracao){
-	this.titPrimario = titPrimario;
-	this.titSecundario = titSecundario;
-	this.duracao = duracao;
+document.body.onload = function(event) {
+	var request = new XMLHttpRequest();
+	var tableRef = document.getElementById('tabela-filmes').getElementsByTagName('tbody')[0];
+
+	request.onreadystatechange = function() {
+	 	if(request.readyState === 4) {
+	    	console.log("AQUIdsfds")
+	    	if(request.status === 200) {
+	    		var obj = JSON.parse(request.responseText); 
+	    		preencheTabela(obj, tableRef);
+	    	} else {
+	      		console.log('An error occurred during your request: ' +  request.status + ' ' + request.statusText);
+	    	} 
+	  	}
+	}
+
+	request.open('Get', 'http://localhost:8080/api/filmes/pagina/1');
+	request.send();
+
+	loadSeries();
 }
 
-var movie1 = new movie("Tropa de Elite 1", "Truepa de Elite 1", "190");
-var movie2 = new movie("Tropa de Elite 2", "Truepa de Elite 2", "120");
-var movie3 = new movie("Tropa de Elite 3", "Truepa de Elite 3", "120");
+function loadSeries(){
+	var request = new XMLHttpRequest();
+	var tableRef = document.getElementById('tabela-series').getElementsByTagName('tbody')[0];
 
-var movies = [movie1, movie2, movie3];
+	request.onreadystatechange = function() {
+	 	if(request.readyState === 4) {
+	    	console.log("AQUIdsfds")
+	    	if(request.status === 200) {
+	    		var obj = JSON.parse(request.responseText); 
+	    		preencheTabela(obj, tableRef);
+	    	} else {
+	      		console.log('An error occurred during your request: ' +  request.status + ' ' + request.statusText);
+	    	} 
+	  	}
+	}
+
+	request.open('Get', 'http://localhost:8080/api/series/pagina/1');
+	request.send();
+}
 
 function newTD(trNova, txtValue){
 	var td, txt, btn;
@@ -19,7 +49,7 @@ function newTD(trNova, txtValue){
 	trNova.appendChild(td);
 }
 
-function newBtn(trNova, btnClass, btnText){
+function newBtn(trNova, btnClass, btnText, btnElemId){
 	var td, txt, btn;
 
 	td = document.createElement("td");
@@ -29,6 +59,7 @@ function newBtn(trNova, btnClass, btnText){
 	
 	btn.setAttribute("data-toggle", "modal");
 	btn.setAttribute("data-target", "#exampleModal");
+	btn.setAttribute("elem-id", "btnElemId");
 
 	txt = document.createTextNode(btnText);
 	btn.appendChild(txt);
@@ -38,27 +69,24 @@ function newBtn(trNova, btnClass, btnText){
 	trNova.appendChild(td);
 }
 
-
-document.body.onload = function(event) {
-
-	var tableRef = document.getElementById('tabela_principal').getElementsByTagName('tbody')[0];
+function preencheTabela(movies, tableRef){
 
 	for(i = 0; i < movies.length; i++){
 		var trNova = document.createElement("tr");
 
 
 		Object.keys(movies[i]).forEach(function(key) {
-    		if(key == 'titPrimario'){
+    		if(key == 'primaryTitle'){
 				newTD(trNova, movies[i][key]);		
     		}
     		
-    		if(key == 'titSecundario'){
+    		if(key == 'originalTitle'){
     			newTD(trNova, movies[i][key]);
     		}
 
 		});
 
-		newBtn(trNova, "btn btn-primary btn-modal", "Info");
+		newBtn(trNova, "btn btn-primary btn-modal", "Info", movies[i]._id);
 		newBtn(trNova, "btn btn-danger", "Deletar");
 
 		tableRef.appendChild(trNova);
@@ -74,13 +102,6 @@ var myFunction = function () {
 	console.log("ID do BOTÃO (data-movie) -> ", this.dataset.movie)
 }
 
-//for (var i = 0; i < btn_modal.length; i++) {
-    //btn_modal[i].addEventListener('click', myFunction, false);
-//}
-//
-//console.log(btn_modal);
-
-btn_modal[0].addEventListener('click', myFunction, false);
-
-
-
+for (var i = 0; i < btn_modal.length; i++) {
+    btn_modal[i].addEventListener('click', myFunction, false);
+}
