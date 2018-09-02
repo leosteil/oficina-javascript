@@ -62,12 +62,13 @@ var UIController = (function () {
 		trNova.appendChild(td);
 	};
 
-	var newTD = function (trNova, txtValue){
+	var newTD = function (trNova, txtValue, classe){
 		var td, txt, btn;
 		
 		td = document.createElement("td");
 		txt = document.createTextNode(txtValue);
 		td.appendChild(txt);
+
 		trNova.appendChild(td);
 	}
 
@@ -79,11 +80,11 @@ var UIController = (function () {
 
 
 			Object.keys(movies[i]).forEach(function(key) {
-	    		if(key == 'primaryTitle'){
+	    		if(key == 'tituloPrimario'){
 					newTD(trNova, movies[i][key]);		
 	    		}
 	    		
-	    		if(key == 'originalTitle'){
+	    		if(key == 'tituloOriginal'){
 	    			newTD(trNova, movies[i][key]);
 	    		}
 
@@ -131,6 +132,7 @@ var controller = (function (dataCtrl, UICtrl) {
 			UICtrl.preencheTabela(obj, DOM.tabela_curtas);
 		});
 	}
+
 
 
 	return {

@@ -1,3 +1,9 @@
 .table td, th {
-   text-align: center;   
+   text-align: left;   
+}
+
+.table td{
+	padding: .20rem;
+	vertical-align: baseline;
+	padding-left: 10px;
 }
