@@ -4,7 +4,6 @@ document.body.onload = function(event) {
 
 	request.onreadystatechange = function() {
 	 	if(request.readyState === 4) {
-	    	console.log("AQUIdsfds")
 	    	if(request.status === 200) {
 	    		var obj = JSON.parse(request.responseText); 
 	    		preencheTabela(obj, tableRef);
