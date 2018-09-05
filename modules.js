@@ -111,7 +111,7 @@ var UIController = (function () {
 
 				});
 
-				newBtn(trNova, "btn btn-primary btn-modal", "Info", movies[i]._id);
+				newBtn(trNova, "btn btn-primary btn-modal btn-info", "Info", movies[i]._id);
 				newBtn(trNova, "btn btn-danger btn-deleta", "Deletar", movies[i]._id);
 
 				document.getElementById(tableRef).getElementsByTagName('tbody')[0].appendChild(trNova);
@@ -149,28 +149,23 @@ var controller = (function (dataCtrl, UICtrl) {
 
 	var	criaEventListeners = function() {
 		document.getElementById(DOMstrings.btn_cadastro).addEventListener('click', ctrlAddItem);
-		console.log(document.getElementById(DOMstrings.btn_cadastro));
-
 
 		var btn_collection = document.getElementsByClassName("btn-deleta");
 
 		for (var i = 0; i < btn_collection.length; i++) {
-		    btn_collection[i].addEventListener('click', function(){
-		    }, false);
+		    btn_collection[i].addEventListener('click', crtlDeleteItem, false);
 		}
 	}
 
 	var ctrlAddItem = function() {
-		console.log("teste")
+		console.log("11111");
 	}
 
-	var crtlDeleteItem = function(){
+	var crtlDeleteItem = function(e){
 		//1. remover elemento do banco via datactrl
-
 		//2. remover elemento da tabela via uictrl
 
-
-		console.log("Leonardo");
+		console.log(e.path[0].getAttribute("elem-id"));
 	}
 
 
