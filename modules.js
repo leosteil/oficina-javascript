@@ -49,8 +49,8 @@ var UIController = (function () {
 		ano_fim : "anoFim",
 		generos: "generos",
 
-		btn_cadastro : 'btn-cadastra',
-		btn_deleta : 'btn btn-danger btn-deleta'
+		btn_cadastro : "btn-cadastra",
+		btn_deleta : ".btn btn-danger btn-deleta"
 	}
 
 	var newBtn = function (trNova, btnClass, btnText, btnElemId){
@@ -130,7 +130,7 @@ var controller = (function (dataCtrl, UICtrl) {
 	var preencheTabelas = function(){
 		var obj;
 
-		obj = dataCtrl.getData(function(obj){			
+		obj = dataCtrl.getData(function(obj){
 			obj ? UICtrl.preencheTabela(obj, DOMtables.tabela_filmes) : alert("ERRO");
 		}, "http://localhost:8080/api/filmes/pagina/1");		
 	
@@ -139,26 +139,29 @@ var controller = (function (dataCtrl, UICtrl) {
 		}, "http://localhost:8080/api/series/pagina/1");
 
 		obj = dataCtrl.getData(function(obj){			
-			obj ? UICtrl.preencheTabela(obj, DOMtables.tabela_curtas) : alert("ERRO");
+			if(obj){
+				UICtrl.preencheTabela(obj, DOMtables.tabela_curtas);
+				criaEventListeners();
+			}else alert("ERRO");
 		}, "http://localhost:8080/api/curtas/pagina/1");
+		
 	}
 
 	var	criaEventListeners = function() {
 		document.getElementById(DOMstrings.btn_cadastro).addEventListener('click', ctrlAddItem);
+		console.log(document.getElementById(DOMstrings.btn_cadastro));
 
-		var btn_del = document.getElementsByClassName(DOMstrings.btn_deleta);
 
-		console.log(btn_del.length);
+		var btn_collection = document.getElementsByClassName("btn-deleta");
 
-		for (var i = 0; i < btn_del.length; i++){
-			console.log("jdhksjdf");
-			btn_del[i].addEventListener('click', crtlDeleteItem);
+		for (var i = 0; i < btn_collection.length; i++) {
+		    btn_collection[i].addEventListener('click', function(){
+		    }, false);
 		}
-
 	}
 
 	var ctrlAddItem = function() {
-
+		console.log("teste")
 	}
 
 	var crtlDeleteItem = function(){
@@ -174,10 +177,8 @@ var controller = (function (dataCtrl, UICtrl) {
 	return {
 		init: function(){
 			console.log("APP START");
-			
+		
 			preencheTabelas();
-			
-			criaEventListeners();
 		}
 	};
 

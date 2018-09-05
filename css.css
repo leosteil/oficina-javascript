@@ -7,3 +7,11 @@
 	vertical-align: baseline;
 	padding-left: 10px;
 }
+
+
+@media (max-width: 1024px) { 
+	.meia-tela{
+		width: 50%;
+	}
+
+}
