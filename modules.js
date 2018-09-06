@@ -134,11 +134,11 @@ var controller = (function (dataCtrl, UICtrl) {
 			obj ? UICtrl.preencheTabela(obj, DOMtables.tabela_filmes) : alert("ERRO");
 		}, "http://localhost:8080/api/filmes/pagina/1");		
 	
-		obj = dataCtrl.getData(function(obj){			
+		obj = dataCtrl.getData(function(obj){	
 			obj ? UICtrl.preencheTabela(obj, DOMtables.tabela_series) : alert("ERRO");
 		}, "http://localhost:8080/api/series/pagina/1");
 
-		obj = dataCtrl.getData(function(obj){			
+		obj = dataCtrl.getData(function(obj){
 			if(obj){
 				UICtrl.preencheTabela(obj, DOMtables.tabela_curtas);
 				criaEventListeners();
@@ -150,11 +150,16 @@ var controller = (function (dataCtrl, UICtrl) {
 	var	criaEventListeners = function() {
 		document.getElementById(DOMstrings.btn_cadastro).addEventListener('click', ctrlAddItem);
 
-		var btn_collection = document.getElementsByClassName("btn-deleta");
-
-		for (var i = 0; i < btn_collection.length; i++) {
-		    btn_collection[i].addEventListener('click', crtlDeleteItem, false);
+		var btnCollDelete = document.getElementsByClassName("btn-deleta");
+		for (var i = 0; i < btnCollDelete.length; i++) {
+		    btnCollDelete[i].addEventListener('click', crtlDeleteItem);
 		}
+		
+		var btnCollInfo = document.getElementsByClassName('btn-info');
+		for(i = 0; i < btnCollInfo.length; i++) {
+			btnCollInfo[i].addEventListener('click', ctrlInfoItem);
+		}
+		
 	}
 
 	var ctrlAddItem = function() {
@@ -168,11 +173,15 @@ var controller = (function (dataCtrl, UICtrl) {
 		console.log(e.path[0].getAttribute("elem-id"));
 	}
 
+	var ctrlInfoItem = function(e) {
+		console.log(e.path[0].getAttribute('elem-id'));
+		document.getElementById('modalTituloPrimario').textContent = e.path[0].getAttribute('elem-id');
+	}
 
 	return {
 		init: function(){
 			console.log("APP START");
-		
+			
 			preencheTabelas();
 		}
 	};
