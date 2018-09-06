@@ -116,6 +116,36 @@ var UIController = (function () {
 
 				document.getElementById(tableRef).getElementsByTagName('tbody')[0].appendChild(trNova);
 			}
+		},
+
+		preencheModalInfo: function(entry) {
+
+			var p = document.getElementById('pAnoFim');
+
+			document.getElementById('modalTituloPrimario').textContent = entry.tituloPrimario;
+
+			document.getElementById('modalTituloOriginal').textContent = entry.tituloOriginal;
+
+			document.getElementById('modalAnoInicio').textContent = entry.anoInicio;
+
+			if(entry.anoFim != undefined) {
+				if(p.hasAttribute('hidden')) p.removeAttribute('hidden');
+				document.getElementById('modalAnoFim').textContent = entry.anoFim;
+			} else {
+				if(!p.hasAttribute('hidden')) p.setAttribute('hidden');
+			}
+
+			document.getElementById('modalDuracaoMinutos').textContent = entry.duracaoMinutos;
+
+			var ulGeneros = document.getElementById('modalGeneros');
+			while(ulGeneros.firstChild) {
+				ulGeneros.removeChild(ulGeneros.firstChild);
+			}
+			entry.generos.forEach(function(genero){
+				var li = document.createElement('li');
+				li.textContent = genero;
+				ulGeneros.appendChild(li);
+			});
 		}
 
 	};
@@ -174,8 +204,9 @@ var controller = (function (dataCtrl, UICtrl) {
 	}
 
 	var ctrlInfoItem = function(e) {
-		console.log(e.path[0].getAttribute('elem-id'));
-		document.getElementById('modalTituloPrimario').textContent = e.path[0].getAttribute('elem-id');
+		dataCtrl.getData(function(entry) {
+			UICtrl.preencheModalInfo(entry);
+		}, 'http://localhost:8080/api/filmes/' + e.path[0].getAttribute('elem-id'));
 	}
 
 	return {

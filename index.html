@@ -84,14 +84,19 @@
 	  <div class="modal-dialog" role="document">
 	    <div class="modal-content">
 	      <div class="modal-header">
-	        <h5 class="modal-title" id="titulo-filme"></h5>
+	        <h4 class="modal-title" id="modalTituloPrimario"></h5>
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 	          <span aria-hidden="true">&times;</span>
 	        </button>
 	      </div>
 	      <div class="modal-body">
-					<p id="modalTituloPrimario"></p>
-
+					<p><b>Título Original: </b><span id="modalTituloOriginal"></span></p>
+					<p><b>Ano de Início: </b><span id="modalAnoInicio"></span></p>
+					<p hidden id="pAnoFim"><b>Ano de Término: </b><span id="modalAnoFim"></span></p>
+					<p><b>Duração: </b><span id="modalDuracaoMinutos"></span> minutos</p>
+					<p><b>Gêneros: </b>
+						<ul id="modalGeneros"></ul>
+					</p>
 	      </div>
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
