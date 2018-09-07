@@ -129,10 +129,10 @@ var UIController = (function () {
 			document.getElementById('modalAnoInicio').textContent = entry.anoInicio;
 
 			if(entry.anoFim != undefined) {
-				if(p.hasAttribute('hidden')) p.removeAttribute('hidden');
+				if(p.hidden) p.hidden = false;
 				document.getElementById('modalAnoFim').textContent = entry.anoFim;
 			} else {
-				if(!p.hasAttribute('hidden')) p.setAttribute('hidden');
+				if(!p.hidden) p.hidden = true;
 			}
 
 			document.getElementById('modalDuracaoMinutos').textContent = entry.duracaoMinutos;
@@ -204,9 +204,14 @@ var controller = (function (dataCtrl, UICtrl) {
 	}
 
 	var ctrlInfoItem = function(e) {
+
+		var urlPart = document.getElementsByClassName('nav-link active')[0].getAttribute('href');
+		urlPart = urlPart.replace('#', '');
+
 		dataCtrl.getData(function(entry) {
 			UICtrl.preencheModalInfo(entry);
-		}, 'http://localhost:8080/api/filmes/' + e.path[0].getAttribute('elem-id'));
+		}, 'http://localhost:8080/api/' + urlPart + '/' + e.path[0].getAttribute('elem-id'));
+
 	}
 
 	return {
