@@ -20,7 +20,7 @@ var dataController = (function () {
 			    		var obj = JSON.parse(request.responseText);
 			    		callback(obj);
 			    	} else {
-			    		callback(false);
+			    		callback(request.status);
 			    	} 
 			  	}
 			}
@@ -50,7 +50,16 @@ var UIController = (function () {
 		generos: "generos",
 
 		btn_cadastro : "btn-cadastra",
-		btn_deleta : ".btn btn-danger btn-deleta"
+		btn_deleta : ".btn btn-danger btn-deleta",
+
+		div_error_filmes : "div-error-filmes",
+		div_error_series : "div-error-series",
+		div_error_curtas : 'div-error-curtas',
+
+		error_filmes : "error-filmes",
+		error_series : "error-series",
+		error_curtas : "error-curtas",
+
 	}
 
 	var newBtn = function (trNova, btnClass, btnText, btnElemId){
@@ -97,6 +106,7 @@ var UIController = (function () {
 		},
 
 		preencheTabela: function(movies, tableRef){
+			console.log(tableRef);
 			for(i = 0; i < movies.length; i++){
 				var trNova = document.createElement("tr");
 
@@ -111,7 +121,7 @@ var UIController = (function () {
 
 				});
 
-				newBtn(trNova, "btn btn-primary btn-modal btn-info", "Info", movies[i]._id);
+				newBtn(trNova, "btn btn-primary btn-modal btn-info "  + tableRef, "Info", movies[i]._id);
 				newBtn(trNova, "btn btn-danger btn-deleta", "Deletar", movies[i]._id);
 
 				document.getElementById(tableRef).getElementsByTagName('tbody')[0].appendChild(trNova);
@@ -146,6 +156,15 @@ var UIController = (function () {
 				li.textContent = genero;
 				ulGeneros.appendChild(li);
 			});
+		},
+
+		errorMessage: function(erro, tabela_erro){
+			var div = document.getElementById(tabela_erro);
+			var alert = urlPart = tabela_erro.replace('div-', '');
+			alert = document.getElementById(alert);
+
+			div.style.display = ""; 
+			alert.textContent = alert.textContent + " ERRO: " + 404;
 		}
 
 	};
@@ -158,23 +177,25 @@ var controller = (function (dataCtrl, UICtrl) {
 	var DOMstrings = UICtrl.getDOMstrings();
 
 	var preencheTabelas = function(){
-		var obj;
+		var obj;		
 
-		obj = dataCtrl.getData(function(obj){
+		/*obj = dataCtrl.getData(function(obj){
 			obj ? UICtrl.preencheTabela(obj, DOMtables.tabela_filmes) : alert("ERRO");
 		}, "http://localhost:8080/api/filmes/pagina/1");		
 	
 		obj = dataCtrl.getData(function(obj){	
 			obj ? UICtrl.preencheTabela(obj, DOMtables.tabela_series) : alert("ERRO");
-		}, "http://localhost:8080/api/series/pagina/1");
+		}, "http://localhost:8080/api/series/pagina/1");*/
 
 		obj = dataCtrl.getData(function(obj){
-			if(obj){
+			if(typeof obj == "object"){
 				UICtrl.preencheTabela(obj, DOMtables.tabela_curtas);
-				criaEventListeners();
-			}else alert("ERRO");
+				//criaEventListeners();
+			}else UICtrl.errorMessage(obj, DOMstrings.div_error_curtas);
 		}, "http://localhost:8080/api/curtas/pagina/1");
 		
+		criaEventListeners();
+
 	}
 
 	var	criaEventListeners = function() {
@@ -187,6 +208,7 @@ var controller = (function (dataCtrl, UICtrl) {
 		
 		var btnCollInfo = document.getElementsByClassName('btn-info');
 		for(i = 0; i < btnCollInfo.length; i++) {
+			console.log("aqui");
 			btnCollInfo[i].addEventListener('click', ctrlInfoItem);
 		}
 		

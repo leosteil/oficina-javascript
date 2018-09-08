@@ -17,7 +17,6 @@
 <body>
 
 	<div class="container">
-
 		<ul class="nav nav-tabs nav-pills nav-fill" id="myTab" role="tablist">
 			<li class="nav-item">
 				<a class="nav-link active" id="filmes-tab" data-toggle="tab" href="#filmes" role="tab" aria-controls="filmes" aria-selected="true">Filmes</a>
@@ -42,6 +41,13 @@
 						</tr>
 					</thead>
 					<tbody>
+
+						<div id="div-error-filmes" style="display: none;">
+							<div id="error-filmes" class="alert alert-danger" role="alert">
+								Ocorreu um erro na requisição!
+							</div>
+						</div>
+
 					</tbody>
 				</table>
 			</div>
@@ -58,6 +64,11 @@
 						</tr>
 					</thead>
 					<tbody>
+						<div id="div-error-series" style="display: none;">
+							<div id="error-series" class="alert alert-danger" role="alert">
+								Ocorreu um erro na requisição!
+							</div>
+						</div>
 					</tbody>
 				</table>
 			</div>
@@ -73,12 +84,17 @@
 						</tr>
 					</thead>
 					<tbody>
+
+						<div id="div-error-curtas" style="display: none;">
+							<div id="error-curtas" class="alert alert-danger" role="alert">
+								Ocorreu um erro na requisição!
+							</div>
+						</div>
+						
 					</tbody>
 				</table>
 			</div>
 		</div>
-
-
 	</div>
 
 	<!-- Modal -->
