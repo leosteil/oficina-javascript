@@ -27,7 +27,25 @@ var dataController = (function () {
 
 			request.open('Get', url);
 			request.send();
-		}
+		},
+
+		removeData: function(callback, url, data){
+			var request = new XMLHttpRequest();
+			
+			request.onreadystatechange = function() {
+			 	if(request.readyState === 4) {
+			    	if(request.status === 200) {
+			    		var obj = JSON.parse(request.responseText);
+			    		callback(obj);
+			    	} else {
+			    		callback(request.status);
+			    	} 
+			  	}
+			}
+
+			request.open('Delete', url);
+			request.send();
+		} 
 	};
 
 })();
@@ -106,7 +124,6 @@ var UIController = (function () {
 		},
 
 		preencheTabela: function(movies, tableRef){
-			console.log(tableRef);
 			for(i = 0; i < movies.length; i++){
 				var trNova = document.createElement("tr");
 
@@ -165,6 +182,10 @@ var UIController = (function () {
 
 			div.style.display = ""; 
 			alert.textContent = alert.textContent + " ERRO: " + 404;
+		},
+
+		removeTR: function(table, tr){
+			document.getElementById(table).getElementsByTagName('tbody')[0].removeChild(tr);
 		}
 
 	};
@@ -176,26 +197,30 @@ var controller = (function (dataCtrl, UICtrl) {
 	var DOMtables = UICtrl.getTablesREF();
 	var DOMstrings = UICtrl.getDOMstrings();
 
-	var preencheTabelas = function(){
-		var obj;		
+	var preencheTabelas = function(){		
 
-		/*obj = dataCtrl.getData(function(obj){
-			obj ? UICtrl.preencheTabela(obj, DOMtables.tabela_filmes) : alert("ERRO");
-		}, "http://localhost:8080/api/filmes/pagina/1");		
+		dataCtrl.getData(function(obj){
+			if(typeof obj == "object"){
+				UICtrl.preencheTabela(obj, DOMtables.tabela_filmes);
+				//criaEventListeners();
+			}else UICtrl.errorMessage(obj, DOMstrings.div_error_filmes);
+		}, "http://localhost:8080/api/filmes/pagina/2");		
 	
-		obj = dataCtrl.getData(function(obj){	
-			obj ? UICtrl.preencheTabela(obj, DOMtables.tabela_series) : alert("ERRO");
-		}, "http://localhost:8080/api/series/pagina/1");*/
+		dataCtrl.getData(function(obj){	
+			if(typeof obj == "object"){
+				UICtrl.preencheTabela(obj, DOMtables.tabela_series);
+				//criaEventListeners();
+			}else UICtrl.errorMessage(obj, DOMstrings.div_error_series);
+		}, "http://localhost:8080/api/series/pagina/1");
 
-		obj = dataCtrl.getData(function(obj){
+		dataCtrl.getData(function(obj){
+			console.log(obj);
 			if(typeof obj == "object"){
 				UICtrl.preencheTabela(obj, DOMtables.tabela_curtas);
-				//criaEventListeners();
+				criaEventListeners();
 			}else UICtrl.errorMessage(obj, DOMstrings.div_error_curtas);
 		}, "http://localhost:8080/api/curtas/pagina/1");
 		
-		criaEventListeners();
-
 	}
 
 	var	criaEventListeners = function() {
@@ -208,21 +233,31 @@ var controller = (function (dataCtrl, UICtrl) {
 		
 		var btnCollInfo = document.getElementsByClassName('btn-info');
 		for(i = 0; i < btnCollInfo.length; i++) {
-			console.log("aqui");
 			btnCollInfo[i].addEventListener('click', ctrlInfoItem);
 		}
 		
 	}
 
 	var ctrlAddItem = function() {
-		console.log("11111");
+		// 1. Get the field input data
+		// 2. Add the item to the budget controller
+		// 3. Add the item to the UI
+		// 4. Clear the fields
 	}
 
 	var crtlDeleteItem = function(e){
-		//1. remover elemento do banco via datactrl
-		//2. remover elemento da tabela via uictrl
 
-		console.log(e.path[0].getAttribute("elem-id"));
+		var urlPart = document.getElementsByClassName('nav-link active')[0].getAttribute('href');
+		var tabela = document.getElementsByClassName('nav-link active')[0].getAttribute('id');
+
+		urlPart = urlPart.replace('#', '');
+		tabela = "tabela-" + tabela.replace('-tab', '') + "";
+
+		dataCtrl.removeData(function(res) {
+			if(typeof res != "number"){
+				UICtrl.removeTR(tabela, e.path[2]);
+			}
+		}, 'http://localhost:8080/api/' + urlPart + '/' + e.path[0].getAttribute('elem-id'));
 	}
 
 	var ctrlInfoItem = function(e) {
