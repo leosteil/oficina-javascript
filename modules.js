@@ -201,24 +201,24 @@ var controller = (function (dataCtrl, UICtrl) {
 
 		dataCtrl.getData(function(obj){
 			if(typeof obj == "object"){
-				UICtrl.preencheTabela(obj, DOMtables.tabela_filmes);
+				UICtrl.preencheTabela(obj.docs, DOMtables.tabela_filmes);
 				//criaEventListeners();
-			}else UICtrl.errorMessage(obj, DOMstrings.div_error_filmes);
-		}, "http://localhost:8080/api/filmes/pagina/2");		
+			}else UICtrl.errorMessage(obj.docs, DOMstrings.div_error_filmes);
+		}, "http://localhost:8080/api/filmes/pagina/1");		
 	
 		dataCtrl.getData(function(obj){	
 			if(typeof obj == "object"){
-				UICtrl.preencheTabela(obj, DOMtables.tabela_series);
+				UICtrl.preencheTabela(obj.docs, DOMtables.tabela_series);
 				//criaEventListeners();
-			}else UICtrl.errorMessage(obj, DOMstrings.div_error_series);
+			}else UICtrl.errorMessage(obj.docs, DOMstrings.div_error_series);
 		}, "http://localhost:8080/api/series/pagina/1");
 
 		dataCtrl.getData(function(obj){
 			console.log(obj);
 			if(typeof obj == "object"){
-				UICtrl.preencheTabela(obj, DOMtables.tabela_curtas);
+				UICtrl.preencheTabela(obj.docs, DOMtables.tabela_curtas);
 				criaEventListeners();
-			}else UICtrl.errorMessage(obj, DOMstrings.div_error_curtas);
+			}else UICtrl.errorMessage(obj.docs, DOMstrings.div_error_curtas);
 		}, "http://localhost:8080/api/curtas/pagina/1");
 		
 	}
