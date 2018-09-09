@@ -128,7 +128,7 @@
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title" id="cadastroModalLabel">Título do Filme</h5>
+					<h5 class="modal-title" id="cadastroModalLabel">Cadastrar novo Espetáculo</h5>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
@@ -137,41 +137,41 @@
 
 					<form>
 						<div class="form-group">
-							<label for="tipoTitulo">Gênero</label>
-							<input type="text" class="form-control" name="tipoTitulo" id="tipoTitulo">
+							<label for="formTituloPrimario">Título Primário</label>
+							<input type="text" class="form-control" name="formTituloPrimario" id="formTituloPrimario">
 						</div>
 
 						<div class="form-group">
-							<label for="tituloPrimario">Título Primário</label>
-							<input type="text" class="form-control" name="tituloPrimario" id="tituloPrimario">
+							<label for="formTituloOriginal">Título Original</label>
+							<input type="text" class="form-control" name="formTituloOriginal" id="formTituloOriginal">
 						</div>
 
 						<div class="form-group">
-							<label for="tituloOriginal">Título Secundário</label>
-							<input type="text" class="form-control" name="tituloOriginal" id="tituloOriginal">
-						</div>
-
-
-						<div class="form-group">
-							<label for="anoInicio">Ano de Início</label>
-							<input type="text" class="form-control" name="anoInicio" id="anoInicio">
-
-							<label for="anoFim">Ano de Término</label>
-							<input type="text" class="form-control" name="anoFim" id="anoFim">
-						</div>
-
-						<!-- <div class="form-group">
-
-	      		</div> -->
-
-						<div class="form-group">
-							<label for="duracao">Duração</label>
-							<input type="text" class="form-control" name="duracao" id="duracao">
+							<label for="formTipoTitulo">Tipo</label>
+							<select class="form-control" name="formTipoTitulo" id="formTipoTitulo">
+								<option value="">Selecione um tipo</option>
+								<option value="filme">Filme</option>
+								<option value="serie">Série</option>
+								<option value="curta">Curta</option>
+							</select>
 						</div>
 
 						<div class="form-group">
-							<label for="generos">Genêros</label>
-							<input type="text" class="form-control" name="generos" id="generos">
+							<label for="formAnoInicio">Ano de Início</label>
+							<input type="text" class="form-control" name="formAnoInicio" id="formAnoInicio">
+
+							<label for="formAnoFim">Ano de Término</label>
+							<input type="text" class="form-control" name="formAnoFim" id="formAnoFim">
+						</div>
+
+						<div class="form-group">
+							<label for="formDuracao">Duração (minutos)</label>
+							<input type="text" class="form-control" name="formDuracao" id="formDuracao">
+						</div>
+
+						<div class="form-group">
+							<label for="formGeneros">Gêneros</label>
+							<input type="text" class="form-control" name="formGeneros" id="formGeneros">
 						</div>
 
 					</form>
