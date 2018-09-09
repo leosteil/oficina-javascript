@@ -253,11 +253,16 @@ var controller = (function (dataCtrl, UICtrl) {
 		urlPart = urlPart.replace('#', '');
 		tabela = "tabela-" + tabela.replace('-tab', '') + "";
 
-		dataCtrl.removeData(function(res) {
-			if(typeof res != "number"){
-				UICtrl.removeTR(tabela, e.path[2]);
-			}
-		}, 'http://localhost:8080/api/' + urlPart + '/' + e.path[0].getAttribute('elem-id'));
+		if(window.confirm('Você tem certeza que deseja excluir este item?')) {
+			
+			dataCtrl.removeData(function(res) {
+				if(typeof res != "number"){
+					UICtrl.removeTR(tabela, e.path[2]);
+				}
+			}, 'http://localhost:8080/api/' + urlPart + '/' + e.path[0].getAttribute('elem-id'));
+
+		}
+
 	}
 
 	var ctrlInfoItem = function(e) {
