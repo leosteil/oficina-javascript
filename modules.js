@@ -25,8 +25,27 @@ var dataController = (function () {
 			  	}
 			}
 
-			request.open('Get', url);
+			request.open('GET', url);
 			request.send();
+		},
+
+		postData: function(callback, data, url) {
+			var request = new XMLHttpRequest();
+			
+			request.onreadystatechange = function() {
+			 	if(request.readyState === 4) {
+			    	if(request.status === 200) {
+			    		var obj = JSON.parse(request.responseText);
+			    		callback(obj);
+			    	} else {
+			    		callback(request.status);
+			    	} 
+			  	}
+			}
+			
+			request.open('POST', url);
+			request.setRequestHeader("Content-Type", "application/json");
+			request.send(data);
 		},
 
 		removeData: function(callback, url, data){
@@ -43,7 +62,7 @@ var dataController = (function () {
 			  	}
 			}
 
-			request.open('Delete', url);
+			request.open('DELETE', url);
 			request.send();
 		} 
 	};
@@ -67,7 +86,7 @@ var UIController = (function () {
 		ano_fim : "anoFim",
 		generos: "generos",
 
-		btn_cadastro : "btn-cadastra",
+		btn_cadastra : "btn-cadastra",
 		btn_deleta : ".btn btn-danger btn-deleta",
 
 		div_error_filmes : "div-error-filmes",
@@ -224,7 +243,7 @@ var controller = (function (dataCtrl, UICtrl) {
 	}
 
 	var	criaEventListeners = function() {
-		document.getElementById(DOMstrings.btn_cadastro).addEventListener('click', ctrlAddItem);
+		document.getElementById(DOMstrings.btn_cadastra).addEventListener('click', ctrlAddItem);
 
 		var btnCollDelete = document.getElementsByClassName("btn-deleta");
 		for (var i = 0; i < btnCollDelete.length; i++) {
@@ -238,7 +257,25 @@ var controller = (function (dataCtrl, UICtrl) {
 		
 	}
 
-	var ctrlAddItem = function() {
+	var ctrlAddItem = function(e) {
+
+		var item = {
+			tituloPrimario: document.getElementById('formTituloPrimario').value,
+			tituloOriginal: document.getElementById('formTituloOriginal').value,
+			anoInicio: document.getElementById('formAnoInicio').valueAsNumber,
+			anoFim: document.getElementById('formAnoFim').valueAsNumber,
+			duracaoMinutos: document.getElementById('formDuracao').valueAsNumber,
+			generos: document.getElementById('formGeneros').value,
+		}
+		var urlPart = document.getElementById('formTipoTitulo').value;
+
+		console.log(item);
+		console.log(urlPart);
+
+		dataCtrl.postData(function(e) {
+			console.log(e);
+		}, JSON.stringify(item), 'http://localhost:8080/api/' + urlPart);
+
 		// 1. Get the field input data
 		// 2. Add the item to the budget controller
 		// 3. Add the item to the UI
