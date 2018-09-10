@@ -1,15 +1,5 @@
 var dataController = (function () {
 
-	var Item = function(tipoTitulo, tituloPrimario, tituloOriginal, anoInicio, anoFim, duracaoMinutos, generos){
-		this.tipoTitulo = tipoTitulo;
-		this.tituloPrimario = tituloPrimario;
-		this.tituloOriginal = tituloOriginal;
-		this.anoInicio = anoInicio;
-		this.anoFim = anoFim;
-		this.duracaoMinutos = duracaoMinutos;
-		this.generos = generos;
-	}
-
 	return {
 		getData: function(callback, url){
 			var request = new XMLHttpRequest();
@@ -167,11 +157,8 @@ var UIController = (function () {
 		preencheModalInfo: function(entry) {
 
 			var p = document.getElementById('pAnoFim');
-
 			document.getElementById('modalTituloPrimario').textContent = entry.tituloPrimario;
-
 			document.getElementById('modalTituloOriginal').textContent = entry.tituloOriginal;
-
 			document.getElementById('modalAnoInicio').textContent = entry.anoInicio;
 
 			if(entry.anoFim != undefined) {
@@ -192,6 +179,18 @@ var UIController = (function () {
 				li.textContent = genero;
 				ulGeneros.appendChild(li);
 			});
+		},
+
+		limpaForm: function() {
+
+			document.getElementById('formTituloPrimario').value = '';
+			document.getElementById('formTituloOriginal').value = '';
+			document.getElementById('formAnoInicio').value = '';
+			document.getElementById('formAnoFim').value = '';
+			document.getElementById('formDuracao').value = '';
+			document.getElementById('formGeneros').value = '';
+			document.getElementById('formTipoTitulo').value = '';
+			
 		},
 
 		errorMessage: function(erro, tabela_erro){
@@ -259,27 +258,27 @@ var controller = (function (dataCtrl, UICtrl) {
 
 	var ctrlAddItem = function(e) {
 
+		var varAnoFim = document.getElementById('formAnoFim').valueAsNumber;
+
 		var item = {
 			tituloPrimario: document.getElementById('formTituloPrimario').value,
 			tituloOriginal: document.getElementById('formTituloOriginal').value,
 			anoInicio: document.getElementById('formAnoInicio').valueAsNumber,
-			anoFim: document.getElementById('formAnoFim').valueAsNumber,
+			anoFim: (!Number.isNaN(varAnoFim)) ? varAnoFim : undefined,
 			duracaoMinutos: document.getElementById('formDuracao').valueAsNumber,
 			generos: document.getElementById('formGeneros').value,
 		}
 		var urlPart = document.getElementById('formTipoTitulo').value;
 
-		console.log(item);
-		console.log(urlPart);
-
-		dataCtrl.postData(function(e) {
-			console.log(e);
+		dataCtrl.postData(function(item) {
+			// if(item){
+				// UICtrl.insereTabela(item);
+			// } else {
+				// UICtrl.errorMessage();
+			// }
+			UICtrl.limpaForm();
 		}, JSON.stringify(item), 'http://localhost:8080/api/' + urlPart);
 
-		// 1. Get the field input data
-		// 2. Add the item to the budget controller
-		// 3. Add the item to the UI
-		// 4. Clear the fields
 	}
 
 	var crtlDeleteItem = function(e){
