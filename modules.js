@@ -18,6 +18,7 @@ var dataController = (function () {
 			 	if(request.readyState === 4) {
 			    	if(request.status === 200) {
 			    		var obj = JSON.parse(request.responseText);
+			    		console
 			    		callback(obj);
 			    	} else {
 			    		callback(request.status);
@@ -158,6 +159,7 @@ var UIController = (function () {
 				});
 
 				newBtn(trNova, "btn btn-primary btn-modal btn-info "  + tableRef, "Info", movies[i]._id);
+				newBtn(trNova, "btn btn-primary btn-modal btn-editar "  + tableRef, "Editar", movies[i]._id);
 				newBtn(trNova, "btn btn-danger btn-deleta", "Deletar", movies[i]._id);
 
 				document.getElementById(tableRef).getElementsByTagName('tbody')[0].appendChild(trNova);
@@ -220,24 +222,24 @@ var controller = (function (dataCtrl, UICtrl) {
 
 		dataCtrl.getData(function(obj){
 			if(typeof obj == "object"){
-				UICtrl.preencheTabela(obj.docs, DOMtables.tabela_filmes);
+				UICtrl.preencheTabela(obj, DOMtables.tabela_filmes);
 				//criaEventListeners();
-			}else UICtrl.errorMessage(obj.docs, DOMstrings.div_error_filmes);
+			}else UICtrl.errorMessage(obj, DOMstrings.div_error_filmes);
 		}, "http://localhost:8080/api/filmes/pagina/1");		
 	
 		dataCtrl.getData(function(obj){	
 			if(typeof obj == "object"){
-				UICtrl.preencheTabela(obj.docs, DOMtables.tabela_series);
+				UICtrl.preencheTabela(obj, DOMtables.tabela_series);
 				//criaEventListeners();
-			}else UICtrl.errorMessage(obj.docs, DOMstrings.div_error_series);
+			}else UICtrl.errorMessage(obj, DOMstrings.div_error_series);
 		}, "http://localhost:8080/api/series/pagina/1");
 
 		dataCtrl.getData(function(obj){
 			console.log(obj);
 			if(typeof obj == "object"){
-				UICtrl.preencheTabela(obj.docs, DOMtables.tabela_curtas);
+				UICtrl.preencheTabela(obj, DOMtables.tabela_curtas);
 				criaEventListeners();
-			}else UICtrl.errorMessage(obj.docs, DOMstrings.div_error_curtas);
+			}else UICtrl.errorMessage(obj, DOMstrings.div_error_curtas);
 		}, "http://localhost:8080/api/curtas/pagina/1");
 		
 	}
@@ -286,6 +288,7 @@ var controller = (function (dataCtrl, UICtrl) {
 
 		var urlPart = document.getElementsByClassName('nav-link active')[0].getAttribute('href');
 		var tabela = document.getElementsByClassName('nav-link active')[0].getAttribute('id');
+		var path = e.path || (e.composedPath && e.composedPath());
 
 		urlPart = urlPart.replace('#', '');
 		tabela = "tabela-" + tabela.replace('-tab', '') + "";
@@ -294,9 +297,9 @@ var controller = (function (dataCtrl, UICtrl) {
 			
 			dataCtrl.removeData(function(res) {
 				if(typeof res != "number"){
-					UICtrl.removeTR(tabela, e.path[2]);
+					UICtrl.removeTR(tabela, path[2]);
 				}
-			}, 'http://localhost:8080/api/' + urlPart + '/' + e.path[0].getAttribute('elem-id'));
+			}, 'http://localhost:8080/api/' + urlPart + '/' + path[0].getAttribute('elem-id'));
 
 		}
 
@@ -306,10 +309,11 @@ var controller = (function (dataCtrl, UICtrl) {
 
 		var urlPart = document.getElementsByClassName('nav-link active')[0].getAttribute('href');
 		urlPart = urlPart.replace('#', '');
+		var path = e.path || (e.composedPath && e.composedPath());
 
 		dataCtrl.getData(function(entry) {
 			UICtrl.preencheModalInfo(entry);
-		}, 'http://localhost:8080/api/' + urlPart + '/' + e.path[0].getAttribute('elem-id'));
+		}, 'http://localhost:8080/api/' + urlPart + '/' + path[0].getAttribute('elem-id'));
 
 	}
 
