@@ -8,6 +8,9 @@
 	padding-left: 10px;
 }
 
+#ul-erros {
+	margin-bottom: 0;
+}
 
 @media (max-width: 1024px) { 
 	.meia-tela{

@@ -1,5 +1,13 @@
 var dataController = (function () {
 
+	var erroDefault = { 
+		mensagem: {
+			errors: {
+				default: { message: 'Erro 404 na requisição!' }
+			}
+		}
+	};
+
 	return {
 		getData: function(callback, url){
 			var request = new XMLHttpRequest();
@@ -8,11 +16,13 @@ var dataController = (function () {
 			 	if(request.readyState === 4) {
 			    	if(request.status === 200) {
 			    		var obj = JSON.parse(request.responseText);
-			    		console
+			    		callback(obj);
+			    	} else if(request.status === 500){
+			    		var obj = JSON.parse(request.responseText);
 			    		callback(obj);
 			    	} else {
-			    		callback(request.status);
-			    	} 
+						callback(erroDefault);
+					}
 			  	}
 			}
 
@@ -28,9 +38,12 @@ var dataController = (function () {
 			    	if(request.status === 200) {
 			    		var obj = JSON.parse(request.responseText);
 			    		callback(obj);
+			    	} else if(request.status === 500){
+			    		var obj = JSON.parse(request.responseText);
+			    		callback(obj);
 			    	} else {
-			    		callback(request.status);
-			    	} 
+						callback(erroDefault);
+					}
 			  	}
 			}
 			
@@ -47,9 +60,12 @@ var dataController = (function () {
 			    	if(request.status === 200) {
 			    		var obj = JSON.parse(request.responseText);
 			    		callback(obj);
+			    	} else if(request.status === 500){
+			    		var obj = JSON.parse(request.responseText);
+			    		callback(obj);
 			    	} else {
-			    		callback(request.status);
-			    	} 
+						callback(erroDefault);
+					}
 			  	}
 			}
 
@@ -62,34 +78,6 @@ var dataController = (function () {
 
 var UIController = (function () {
 	
-	var tablesREF = {
-		tabela_filmes : "tabela-filmes",
-		tabela_series : "tabela-series",
-		tabela_curtas : "tabela-curtas"
-	};
-
-	var DOMstrings = {
-		tipo_titulo : "tipoTitulo",
-		titulo_original : "tituloOriginal",
-		titulo_primario : "tituloPrimario",
-		duracao : "duracao",
-		ano_inicio : "anoInicio",
-		ano_fim : "anoFim",
-		generos: "generos",
-
-		btn_cadastra : "btn-cadastra",
-		btn_deleta : ".btn btn-danger btn-deleta",
-
-		div_error_filmes : "div-error-filmes",
-		div_error_series : "div-error-series",
-		div_error_curtas : 'div-error-curtas',
-
-		error_filmes : "error-filmes",
-		error_series : "error-series",
-		error_curtas : "error-curtas",
-
-	}
-
 	var newBtn = function (trNova, btnClass, btnText, btnElemId){
 		var td, txt, btn;
 
@@ -124,14 +112,6 @@ var UIController = (function () {
 	}
 
 	return {
-
-		getTablesREF: function() {
-			return tablesREF;
-		},
-
-		getDOMstrings: function() {
-			return DOMstrings;
-		},
 
 		preencheTabela: function(movies, tableRef){
 			for(i = 0; i < movies.length; i++){
@@ -195,13 +175,27 @@ var UIController = (function () {
 			
 		},
 
-		errorMessage: function(erro, tabela_erro){
-			var div = document.getElementById(tabela_erro);
-			var alert = urlPart = tabela_erro.replace('div-', '');
-			alert = document.getElementById(alert);
+		mensagemErro: function(erros){
+			var ulErros = document.getElementById('ul-erros');
+			var erros = erros.mensagem.errors;
 
-			div.style.display = ""; 
-			alert.textContent = alert.textContent + " ERRO: " + 404;
+			erros = Object.keys(erros).map(function(key) {
+				return Number(key), erros[key].message;
+			});
+
+			while(ulErros.firstChild) {
+				ulErros.removeChild(ulErros.firstChild);
+			}
+
+			erros.forEach(function(erro) {
+				var li = document.createElement('li');
+				li.textContent = erro;
+				ulErros.appendChild(li);
+			});
+
+
+			var divErros = document.getElementById('div-erros');
+			if(!divErros.classList.contains('show')) divErros.classList.add('show');
 		},
 
 		removeTR: function(table, tr){
@@ -214,37 +208,38 @@ var UIController = (function () {
 
 
 var controller = (function (dataCtrl, UICtrl) {
-	var DOMtables = UICtrl.getTablesREF();
-	var DOMstrings = UICtrl.getDOMstrings();
 
 	var preencheTabelas = function(){		
 
 		dataCtrl.getData(function(obj){
-			if(typeof obj == "object"){
-				UICtrl.preencheTabela(obj, DOMtables.tabela_filmes);
-				//criaEventListeners();
-			}else UICtrl.errorMessage(obj, DOMstrings.div_error_filmes);
+			if(obj.mensagem){
+				UICtrl.mensagemErro(obj);
+			} else {
+				UICtrl.preencheTabela(obj, 'tabela-filmes');
+			}
 		}, "http://localhost:8080/api/filmes/pagina/1");		
 	
 		dataCtrl.getData(function(obj){	
-			if(typeof obj == "object"){
-				UICtrl.preencheTabela(obj, DOMtables.tabela_series);
-				//criaEventListeners();
-			}else UICtrl.errorMessage(obj, DOMstrings.div_error_series);
+			if(obj.mensagem){
+				UICtrl.mensagemErro(obj);
+			} else {
+				UICtrl.preencheTabela(obj, 'tabela-series');
+			}
 		}, "http://localhost:8080/api/series/pagina/1");
 
 		dataCtrl.getData(function(obj){
-			console.log(obj);
-			if(typeof obj == "object"){
-				UICtrl.preencheTabela(obj, DOMtables.tabela_curtas);
-				criaEventListeners();
-			}else UICtrl.errorMessage(obj, DOMstrings.div_error_curtas);
+			if(obj.mensagem){
+				UICtrl.mensagemErro(obj);
+			} else {
+				UICtrl.preencheTabela(obj, 'tabela-curtas');
+			}
+			criaEventListeners();
 		}, "http://localhost:8080/api/curtas/pagina/1");
 		
 	}
 
 	var	criaEventListeners = function() {
-		document.getElementById(DOMstrings.btn_cadastra).addEventListener('click', ctrlAddItem);
+		document.getElementById('btn-cadastra').addEventListener('click', ctrlAddItem);
 
 		var btnCollDelete = document.getElementsByClassName("btn-deleta");
 		for (var i = 0; i < btnCollDelete.length; i++) {
@@ -258,7 +253,7 @@ var controller = (function (dataCtrl, UICtrl) {
 		
 	}
 
-	var ctrlAddItem = function(e) {
+	var ctrlAddItem = function() {
 
 		var varAnoFim = document.getElementById('formAnoFim').valueAsNumber;
 
@@ -272,11 +267,11 @@ var controller = (function (dataCtrl, UICtrl) {
 		}
 		var urlPart = document.getElementById('formTipoTitulo').value;
 
-		dataCtrl.postData(function(item) {
-			// if(item){
-				// UICtrl.insereTabela(item);
-			// } else {
-				// UICtrl.errorMessage();
+		dataCtrl.postData(function(post) {
+			if(post.mensagem){
+				UICtrl.mensagemErro(post);
+			} //else {
+				//UICtrl.insereTabela(item);
 			// }
 			UICtrl.limpaForm();
 		}, JSON.stringify(item), 'http://localhost:8080/api/' + urlPart);

@@ -7,16 +7,22 @@
 	<meta charset="utf-8">
 
 	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="css.css">
+	<link rel="stylesheet" type="text/css" href="css/css.css">
 
 	<script defer type="text/javascript" src="js/jquery-3.3.1.slim.min.js"></script>
 	<script defer type="text/javascript" src="js/bootstrap.bundle.min.js"></script>
-	<script defer type="text/javascript" src="modules.js"></script>
+	<script defer type="text/javascript" src="js/modules.js"></script>
 </head>
 
 <body>
 
 	<div class="container">
+		
+		<div id="div-erros" class="alert alert-danger fade" role="alert">
+			<ul id="ul-erros">
+			</ul>
+		</div>
+		
 		<ul class="nav nav-tabs nav-pills nav-fill" id="myTab" role="tablist">
 			<li class="nav-item">
 				<a class="nav-link active" id="filmes-tab" data-toggle="tab" href="#filmes" role="tab" aria-controls="filmes" aria-selected="true">Filmes</a>
@@ -41,15 +47,7 @@
 							<th scope="col">Remover</th>
 						</tr>
 					</thead>
-					<tbody>
-
-						<div id="div-error-filmes" style="display: none;">
-							<div id="error-filmes" class="alert alert-danger" role="alert">
-								Ocorreu um erro na requisição!
-							</div>
-						</div>
-
-					</tbody>
+					<tbody></tbody>
 				</table>
 			</div>
 
@@ -65,13 +63,7 @@
 							<th scope="col">Remover</th>
 						</tr>
 					</thead>
-					<tbody>
-						<div id="div-error-series" style="display: none;">
-							<div id="error-series" class="alert alert-danger" role="alert">
-								Ocorreu um erro na requisição!
-							</div>
-						</div>
-					</tbody>
+					<tbody></tbody>
 				</table>
 			</div>
 
@@ -86,15 +78,7 @@
 							<th scope="col">Remover</th>
 						</tr>
 					</thead>
-					<tbody>
-
-						<div id="div-error-curtas" style="display: none;">
-							<div id="error-curtas" class="alert alert-danger" role="alert">
-								Ocorreu um erro na requisição!
-							</div>
-						</div>
-						
-					</tbody>
+					<tbody></tbody>
 				</table>
 			</div>
 		</div>
@@ -192,7 +176,6 @@
 	<footer class="footer">
 		<div class="container">
 
-			<!-- <button type="submit"><img src="icons/plus.png"></button> -->
 			<button type="button" class="btn btn-success btn-lg" data-toggle="modal" data-target="#cadastroModal">Cadastro</button>
 
 		</div>
