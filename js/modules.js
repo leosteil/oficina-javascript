@@ -14,11 +14,10 @@ var dataController = (function() {
 
             request.onreadystatechange = function() {
                 if(request.readyState === 4) {
+                    var obj = JSON.parse(request.responseText);
                     if(request.status === 200) {
-                        var obj = JSON.parse(request.responseText);
                         callback(obj);
                     } else if(request.status === 500) {
-                        var obj = JSON.parse(request.responseText);
                         callback(obj);
                     } else {
                         callback(erroDefault);
@@ -35,11 +34,10 @@ var dataController = (function() {
 
             request.onreadystatechange = function() {
                 if(request.readyState === 4) {
+                    var obj = JSON.parse(request.responseText);
                     if(request.status === 200) {
-                        var obj = JSON.parse(request.responseText);
                         callback(obj);
                     } else if(request.status === 500) {
-                        var obj = JSON.parse(request.responseText);
                         callback(obj);
                     } else {
                         callback(erroDefault);
@@ -57,11 +55,10 @@ var dataController = (function() {
 
             request.onreadystatechange = function() {
                 if(request.readyState === 4) {
+                    var obj = JSON.parse(request.responseText);
                     if(request.status === 200) {
-                        var obj = JSON.parse(request.responseText);
                         callback(obj);
                     } else if(request.status === 500) {
-                        var obj = JSON.parse(request.responseText);
                         callback(obj);
                     } else {
                         callback(erroDefault);
@@ -85,7 +82,6 @@ var UIController = (function() {
         btn = document.createElement("button");
 
         btn.type = "button";
-
 
         if(btnText != "Deletar") {
             btn.setAttribute("data-toggle", "modal");
@@ -266,14 +262,16 @@ var controller = (function(dataCtrl, UICtrl) {
         }
         var urlPart = document.getElementById('formTipoTitulo').value;
 
-        dataCtrl.postData(function(post) {
-            if(post.mensagem) {
-                UICtrl.mensagemErro(post);
-            } //else {
-            //UICtrl.insereTabela(item);
-            // }
-            UICtrl.limpaForm();
-        }, JSON.stringify(item), 'http://localhost:8080/api/' + urlPart);
+        if(urlPart) {
+            dataCtrl.postData(function(post) {
+                if(post.mensagem) {
+                    UICtrl.mensagemErro(post);
+                } //else {
+                //     UICtrl.insereTabela(item);
+                // }
+                UICtrl.limpaForm();
+            }, JSON.stringify(item), 'http://localhost:8080/api/' + urlPart);
+        }
 
     }
 
