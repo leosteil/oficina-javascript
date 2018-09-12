@@ -92,9 +92,11 @@ var UIController = (function() {
         txt = document.createTextNode(btnText);
         btn.appendChild(txt);
 
-        btn.className += btnClass;
+        btn.className = btnClass;
         td.appendChild(btn);
         trNova.appendChild(td);
+
+        return btn;
     };
 
     var newTD = function(trNova, txtValue) {
@@ -124,8 +126,8 @@ var UIController = (function() {
 
                 });
 
-                newBtn(trNova, "btn btn-primary btn-modal btn-info " + tableRef, "Info", movies[i]._id);
-                newBtn(trNova, "btn btn-primary btn-modal btn-editar " + tableRef, "Editar", movies[i]._id);
+                newBtn(trNova, "btn btn-primary btn-modal btn-info", "Info", movies[i]._id);
+                newBtn(trNova, "btn btn-primary btn-modal btn-editar", "Editar", movies[i]._id);
                 newBtn(trNova, "btn btn-danger btn-deleta", "Deletar", movies[i]._id);
 
                 document.getElementById(tableRef).getElementsByTagName('tbody')[0].appendChild(trNova);
@@ -168,6 +170,30 @@ var UIController = (function() {
             document.getElementById('formDuracao').value = '';
             document.getElementById('formGeneros').value = '';
             document.getElementById('formTipoTitulo').value = '';
+
+        },
+
+        insereTabela: function(obj, tabelaRef) {
+
+            var tr = document.createElement("tr");
+
+            Object.keys(obj).forEach(function(key) {
+                if(key == 'tituloPrimario') {
+                    newTD(tr, obj[key]);
+                }
+
+                if(key == 'tituloOriginal') {
+                    newTD(tr, obj[key]);
+                }
+            });
+
+            newBtn(tr, "btn btn-primary btn-modal btn-info", "Info", obj._id);
+            newBtn(tr, "btn btn-primary btn-modal btn-editar", "Editar", obj._id);
+            newBtn(tr, "btn btn-danger btn-deleta", "Deletar", obj._id);
+
+            document.getElementById('tabela-' + tabelaRef).getElementsByTagName('tbody')[0].appendChild(tr);
+
+            return tr;
 
         },
 
@@ -263,13 +289,15 @@ var controller = (function(dataCtrl, UICtrl) {
         var urlPart = document.getElementById('formTipoTitulo').value;
 
         if(urlPart) {
-            dataCtrl.postData(function(post) {
-                if(post.mensagem) {
-                    UICtrl.mensagemErro(post);
-                } //else {
-                //     UICtrl.insereTabela(item);
-                // }
-                UICtrl.limpaForm();
+            dataCtrl.postData(function(obj) {
+                if(obj.mensagem) {
+                    UICtrl.mensagemErro(obj);
+                } else {
+                    var tr = UICtrl.insereTabela(obj, urlPart);
+                    tr.childNodes[2].addEventListener('click', ctrlInfoItem);
+                    tr.childNodes[4].addEventListener('click', crtlDeleteItem);
+                }
+                UICtrl.limpaForm()
             }, JSON.stringify(item), 'http://localhost:8080/api/' + urlPart);
         }
 
