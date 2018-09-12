@@ -314,8 +314,10 @@ var controller = (function(dataCtrl, UICtrl) {
 
         if(window.confirm('Você tem certeza que deseja excluir este item?')) {
 
-            dataCtrl.removeData(function(res) {
-                if(typeof res != "number") {
+            dataCtrl.removeData(function(obj) {
+                if(obj.mensagem) {
+                    UICtrl.mensagemErro(obj);
+                } else {
                     UICtrl.removeTR(tabela, path[2]);
                 }
             }, 'http://localhost:8080/api/' + urlPart + '/' + path[0].getAttribute('elem-id'));
